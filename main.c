@@ -27,12 +27,22 @@ int main()
   int Block_Size=sizeof(books[0]);
   /* printing the Books in The Library */
 int   i=0;
+printf("The Books in the Library are: \n\n");
  for (i;i<len;i++){
 print_book( &books[i]) ;
  }
+ printf("\nPrinting the names of the books in the Library in a nice Format :\n");
+ do_for_books(books,Tweny,&print_nicely);
+ printf("\nPrinting Only NON FICTION book's name and it's field  : \n");
+ do_for_books(books,Tweny,&print_non_fiction);
+ printf("\nPrinting book's Promotion if its Higher than 50 else its prints nothing... \n");
+ do_for_books(books,Tweny,&print_most_promoted);
+ /* printing the result of func min_promotion and min_thrilling_factor */
+ printf("\nMinimum Promotion in  books is : %d",get_min_promotion(books));
+ printf("\nMinimum Thrilling factor in  books is : %.2f",get_min_thrilling_factor(books));
  /* getting from the user the use of the array of pointers oF  BookCopy struct */
  int size=0;
- printf("Please Enter the size of  Copy Books you want to add !!!:  ");
+ printf("\n\nPlease Enter the size of  Copy Books you want to add !!!:  ");
  scanf("%d",&size);
  BookCopy* pointer_Copy= (BookCopy*) malloc(sizeof(BookCopy));
  if(pointer_Copy==NULL){
@@ -124,7 +134,7 @@ long int int_Book_Num;
      free(Lib_Books[i]);
       }
        free(Lib_Books);
-     break;
+     return 1;
 
      default : printf("The number you have entered is not in the menu!!!,Try again!");
  }
