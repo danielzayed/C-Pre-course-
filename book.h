@@ -3,33 +3,31 @@
 #define Six_Bits 6
 enum zone {KIDS,HIGHSCHOOL,ADULT,DOCUMENTARY,COMICS};
 enum genere {DRAMA,THRILLER,COMEDY,NON_FICTION};
-/* drama structure */
-typedef struct DRAMA {
-unsigned int quailty;
-unsigned int plot_quailty;}DR;
-/* comedy structure */
-typedef struct COMEDY {
-unsigned int quailty_of_humor;
-char humor_type;
-}COM;
-typedef union Genre {
-DR DRAMA;
-float thrilling_factor;
-COM COMEDY;
-char NON_FICTION_field[Five];
-}GENRE;
-static void print_DRAMA(GENRE drama);
+
+
+/*static void print_DRAMA(GENRE drama);
 static void print_THRILLER(GENRE thriller);
 static void print_COMEDY(GENRE comedy);
 static void print_NON_FICTION(GENRE non_fiction);
-
+*/
 typedef struct Book {
  long int int_Book_Number;
  char name [BookmaxNumber];
  int promotion ;
  enum zone The_zone;
  enum genere bk_GENRE;/* book Genre */
- GENRE Book_Genre;
+ union Genre {
+struct DRAMA {
+unsigned int quailty;
+unsigned int plot_quailty;}Drama;
+float thrilling_factor;
+struct comedy {
+unsigned int quailty_of_humor;
+char humor_type;
+}COMEDY;
+char NON_FICTION_field[Five];
+}GENRE;
+
 }Book;
 typedef struct BookCopy {
  Book Copy;
@@ -40,7 +38,6 @@ typedef struct BookCopy {
  unsigned int cond_of_att :Six_Bits;
  /* Cover ,Indexing ,Bar Code , Missing pages , Stained pages ,Spine*/
 }BookCopy;
-static char* zones[Five];
 void print_book(Book * book);
 char* get_zone_name(enum zone The_Book_Zone) ;
 int borrow_copy(BookCopy* book, int is_borrowing);
@@ -53,7 +50,7 @@ unsigned int is_ok(BookCopy* bookcopy);
 unsigned int is_useless(BookCopy* bookcopy);
 unsigned int are_in_same_condition(BookCopy* bookcopy ,BookCopy* bookcopy2);
 BookCopy* create_copy( Book copy,long int internalBookNumber,unsigned int condoition_of_att);
-void get_nice_book_name(char * ds,char* src);
+void get_nice_book_name( char * ds, const char* src);
 void print_nicely(const Book* pbook);
 void print_non_fiction(const  Book* pbook);
 void print_most_promoted(const Book* pbook);

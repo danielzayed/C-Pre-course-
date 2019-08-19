@@ -7,7 +7,6 @@
 #define binary_000000 0x00
 #define binary_010101 0x15
 #define binary_010100 0x14
-#define binary_110111 0x27
 #define binary_110111 0x37
 BookCopy* searching_Serial_num(long int ser_num,BookCopy** Lib_Books,int size);
 BookCopy* searching_Serial_num(long int ser_num,BookCopy** Lib_Books,int size){
@@ -23,12 +22,27 @@ return NULL;
 int main()
 {
   extern Book books[Tweny];
+   BookCopy* Search_Copy;
+   BookCopy** Lib_Books;
+   BookCopy* pointer_Copy;
+   BookCopy* Search_Copy2;
+   int size=0;
+   int num=0;
+   int   i;
   int len =sizeof(books)/sizeof(books[0]);
-  int Block_Size=sizeof(books[0]);
+  int  j;
+int Book_Index=-1;
+long int serial_number;
+long int int_Book_Num;
+long int seri_num;
+
+/* specifying Genre details for eac book in books array */
+ specify_Genre_vars(&books[0]);
+
+ /****************************************************** /
   /* printing the Books in The Library */
-int   i=0;
 printf("The Books in the Library are: \n\n");
- for (i;i<len;i++){
+ for (i=0;i<len;i++){
 print_book( &books[i]) ;
  }
  printf("\nPrinting the names of the books in the Library in a nice Format :\n");
@@ -41,15 +55,15 @@ print_book( &books[i]) ;
  printf("\nMinimum Promotion in  books is : %d",get_min_promotion(books));
  printf("\nMinimum Thrilling factor in  books is : %.2f",get_min_thrilling_factor(books));
  /* getting from the user the use of the array of pointers oF  BookCopy struct */
- int size=0;
  printf("\n\nPlease Enter the size of  Copy Books you want to add !!!:  ");
  scanf("%d",&size);
- BookCopy* pointer_Copy= (BookCopy*) malloc(sizeof(BookCopy));
+ pointer_Copy= (BookCopy*) malloc(sizeof(BookCopy));
  if(pointer_Copy==NULL){
     printf("Error! memory not allocated.");
         exit(0);
  }
- BookCopy** Lib_Books=  (BookCopy**)malloc(size* sizeof(pointer_Copy));
+
+ Lib_Books=  (BookCopy**)malloc(size* sizeof(pointer_Copy));
  if(Lib_Books==NULL){
      printf("Error! memory not allocated.");
         exit(0);
@@ -65,10 +79,7 @@ print_book( &books[i]) ;
     }
 
  /* Adding  Copy Of Books to the Lib_Books */
-int  j=0;
-int Book_Index=-1;
-long int int_Book_Num;
- for (j;j<size;j++) {
+ for (j=0;j<size;j++) {
      do {
         printf("   ---   \n");
         printf("Please Add abook-copy to the Library!\n");
@@ -94,13 +105,12 @@ long int int_Book_Num;
  printf("1.Borrow a book-copy.\n");
  printf("2.Return a book-copy.\n");
  printf("9.Exit\n");
- int num=0;
  scanf("%d",&num);
  switch (num) {
      case 1: printf("Please Enter The Serial Number of the Book: ") ;
-     long int serial_number;
+
      scanf("%ld",&serial_number);
-      BookCopy* Search_Copy =searching_Serial_num( serial_number,Lib_Books,size);
+      Search_Copy =searching_Serial_num( serial_number,Lib_Books,size);
       if(Search_Copy==NULL){
          printf(" Sorry!! Incorrect Serial Number \n");
          printf(" Please Try Again!!!\n");
@@ -114,9 +124,8 @@ long int int_Book_Num;
      Search_Copy->borrowing_times+=1;
      break;
      case 2:printf("Please Enter The Serial Number of the Book: ") ;
-     long int seri_num;
      scanf("%ld",&seri_num);
-     BookCopy* Search_Copy2 =searching_Serial_num(seri_num,Lib_Books,size);
+     Search_Copy2 =searching_Serial_num(seri_num,Lib_Books,size);
      if(Search_Copy2==NULL){
          printf(" Sorry!! Incorrect Serial Number \n");
          printf(" Please Try Again!!!\n");

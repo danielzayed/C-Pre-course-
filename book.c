@@ -17,7 +17,11 @@
 #define binary_011000 0x18
 #define binary_000000 0x00
 #define FOUR_Issues 0x0F
-static char* zones[]={{"kids"},{"highschool"},{"adults"},{"documentary"},{"comics"}};
+static void print_DRAMA(union Genre drama);
+static void print_THRILLER(union Genre drama);
+static void print_COMEDY(union Genre drama);
+static void print_NON_FICTION(union Genre drama);
+static char* zones[]={"kids","highschool","adults","documentary","comics"};
 char* get_zone_name(enum zone The_Book_Zone) {
 
     return zones[The_Book_Zone];
@@ -26,30 +30,30 @@ void print_book(Book * book) {
 printf("book's name: %s \n book's Internal Number: %ld \n book's Promotion : %d \n book's zone: %s \n ",book->name,
        book->int_Book_Number,book->promotion,get_zone_name(book->The_zone));
        if(book->bk_GENRE==DRAMA)
-       print_DRAMA(book->Book_Genre);
+       print_DRAMA(book->GENRE);
        else if(book->bk_GENRE==THRILLER)
-        print_THRILLER(book->Book_Genre);
+        print_THRILLER(book->GENRE);
        else if(book->bk_GENRE==COMEDY)
-        print_COMEDY(book->Book_Genre);
+        print_COMEDY(book->GENRE);
        else {
-        print_NON_FICTION(book->Book_Genre);
+        print_NON_FICTION(book->GENRE);
        }
 }
-static void print_DRAMA(GENRE drama){
+static void print_DRAMA(union Genre drama){
 printf("Genre : Drama \n");
-printf(" Text quality: %u \n",drama.DRAMA.quailty);
-printf(" Plot quality: %u \n",drama.DRAMA.plot_quailty);
+printf(" Text quality: %u \n",drama.Drama.quailty);
+printf(" Plot quality: %u \n",drama.Drama.plot_quailty);
 }
-static void print_THRILLER(GENRE thriller){
+static void print_THRILLER(union Genre thriller){
 printf("Genre : Thriller \n");
 printf(" Thrilling factor: %f \n",thriller.thrilling_factor);
 }
-static void print_COMEDY(GENRE comedy){
+static void print_COMEDY(union Genre comedy){
 printf("Genre: Comedy \n");
 printf(" Quality of Humor: %u \n",comedy.COMEDY.quailty_of_humor);
 printf(" Humor type: %c \n",comedy.COMEDY.humor_type);
 }
-static void print_NON_FICTION(GENRE non_fiction){
+static void print_NON_FICTION(union Genre non_fiction){
 printf("Genre: Non Fiction \n");
 printf(" Field Of the Book: %s\n",non_fiction.NON_FICTION_field);
 }
@@ -100,8 +104,9 @@ void print_copy(BookCopy * the_book) {
  }
  unsigned int is_librarian_required(BookCopy* bookcopy){
       unsigned int condiotion_of_att ;
+      unsigned int check_attribute ;
   condiotion_of_att=bookcopy->cond_of_att;
-  unsigned int check_attribute =binary_000001 & condiotion_of_att;
+  check_attribute =binary_000001 & condiotion_of_att;
   if(check_attribute==binary_000001){
     return 1;
   }
@@ -117,8 +122,9 @@ void print_copy(BookCopy * the_book) {
  }
  unsigned int is_bookbinder_required(BookCopy* bookcopy){
  unsigned int condiotion_of_att ;
+ unsigned int check_attribute;
   condiotion_of_att=bookcopy->cond_of_att;
-  unsigned int check_attribute =binary_100000 & condiotion_of_att;
+  check_attribute =binary_100000 & condiotion_of_att;
   if(check_attribute==binary_100000){
     return 1;
   }
@@ -133,9 +139,8 @@ void print_copy(BookCopy * the_book) {
   return 0;
  }
  unsigned int is_repairable(BookCopy* bookcopy){
- unsigned int condiotion_of_att ;
-  condiotion_of_att=bookcopy->cond_of_att;
-  unsigned int check_attribute =binary_011000 & condiotion_of_att;
+ unsigned int condiotion_of_att=bookcopy->cond_of_att ;
+ unsigned int check_attribute =binary_011000 & condiotion_of_att;
   if(check_attribute==binary_000000){
     return 1;
   }
@@ -153,8 +158,9 @@ unsigned int is_ok(BookCopy* bookcopy){
 
 unsigned int is_useless(BookCopy* bookcopy){
     unsigned int condiotion_of_att ;
+    unsigned int size ;
   condiotion_of_att=bookcopy->cond_of_att;
-   unsigned int size =0;
+   size=0;
    while(condiotion_of_att!=binary_000000){
   if(condiotion_of_att %2==1){
 size++;
@@ -177,12 +183,13 @@ init_copy(ptr_Copy,internalBookNumber);
 ptr_Copy->cond_of_att=condoition_of_att;
 return ptr_Copy;
 }
-void get_nice_book_name(char * ds,char* src){
+void get_nice_book_name( char * ds,const char* src){
 int i;
-i=0;
 unsigned char flag;
-flag=0;
 char capital;
+i=0;
+
+flag=0;
 while (src[i]!='\0'){
     if(flag==0 && (src[i]>=charcter_a && src[i]<=charcter_z)){
         capital=src[i]-charcter_a;
@@ -217,7 +224,7 @@ printf("%s \n",des_name);
 void print_non_fiction(const  Book* pbook){
     if(pbook->bk_GENRE==NON_FICTION){
         printf("Book's name : %s \n",pbook->name);
-        printf("Book's field: %s \n",pbook->Book_Genre.NON_FICTION_field);
+        printf("Book's field: %s \n",pbook->GENRE.NON_FICTION_field);
     }
     else{
         printf("---\n");
@@ -256,7 +263,7 @@ int i=0;
 float  thriling_fac=5.01; /* minimum thrilling factor */
 for(i=0;i<Tweny;i++){
    if(books[i].bk_GENRE==THRILLER){
-   thriling_fac=MIN(books[i].Book_Genre.thrilling_factor,thriling_fac);
+   thriling_fac=MIN(books[i].GENRE.thrilling_factor,thriling_fac);
 
 }
 }
