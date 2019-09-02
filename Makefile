@@ -1,4 +1,4 @@
-TARGET=vector_int
+TARGET=book
 
 SOURCES=$(wildcard *.c)
 
